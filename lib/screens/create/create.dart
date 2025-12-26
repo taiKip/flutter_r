@@ -1,3 +1,5 @@
+import 'package:flutter_rpg/models/vocation.dart';
+import 'package:flutter_rpg/screens/create/vocation_card.dart';
 import 'package:flutter_rpg/shared/styled_button.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -21,6 +23,15 @@ class _CreateState extends State<Create> {
     _sloganController.dispose();
     super.dispose();
   }
+  //handling vocation selection
+
+  Vocation selectedVocation = Vocation.junkie;
+
+  void updateVocation(Vocation vocation) {
+    setState(() {
+      selectedVocation = vocation;
+    });
+  }
 
   // submit handler
   void handleSubmit() {
@@ -41,52 +52,86 @@ class _CreateState extends State<Create> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: StyledTitle('Your Characters'), centerTitle: true),
-      body: Container(
-        padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
-        child: Column(
-          children: [
-            //welcome message
-            Center(child: Icon(Icons.code, color: AppColors.primaryColor)),
-            Center(child: const StyledHeading('Welcome, new player.')),
-            Center(
-              child: const StyledText(
-                'Create a name & slogan for your character.',
+      body: SingleChildScrollView(
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+          child: Column(
+            children: [
+              //welcome message
+              Center(child: Icon(Icons.code, color: AppColors.primaryColor)),
+              Center(child: const StyledHeading('Welcome, new player.')),
+              Center(
+                child: const StyledText(
+                  'Create a name & slogan for your character.',
+                ),
               ),
-            ),
-            const SizedBox(height: 30),
+              const SizedBox(height: 30),
 
-            //input for name and slogan
-            TextField(
-              controller: _nameController,
-              style: GoogleFonts.kanit(
-                textStyle: Theme.of(context).textTheme.bodyMedium,
+              //input for name and slogan
+              TextField(
+                controller: _nameController,
+                style: GoogleFonts.kanit(
+                  textStyle: Theme.of(context).textTheme.bodyMedium,
+                ),
+                cursorColor: AppColors.textColor,
+                decoration: const InputDecoration(
+                  prefixIcon: Icon(Icons.person_2),
+                  label: StyledText('Character name'),
+                ),
               ),
-              cursorColor: AppColors.textColor,
-              decoration: const InputDecoration(
-                prefixIcon: Icon(Icons.person_2),
-                label: StyledText('Character name'),
+              SizedBox(height: 20),
+              TextField(
+                controller: _sloganController,
+                style: GoogleFonts.kanit(
+                  textStyle: Theme.of(context).textTheme.bodyMedium,
+                ),
+                cursorColor: AppColors.textColor,
+                decoration: const InputDecoration(
+                  prefixIcon: Icon(Icons.chat),
+                  label: StyledText('Character slogan'),
+                ),
               ),
-            ),
-            SizedBox(height: 20),
-            TextField(
-              controller: _sloganController,
-              style: GoogleFonts.kanit(
-                textStyle: Theme.of(context).textTheme.bodyMedium,
+              const SizedBox(height: 30),
+
+              //select vocation title
+              Center(child: Icon(Icons.code, color: AppColors.primaryColor)),
+              Center(child: const StyledHeading('Choose a vocation.')),
+              Center(
+                child: const StyledText(
+                  'This determinees you availble skills.',
+                ),
               ),
-              cursorColor: AppColors.textColor,
-              decoration: const InputDecoration(
-                prefixIcon: Icon(Icons.chat),
-                label: StyledText('Character slogan'),
+              const SizedBox(height: 30),
+
+              //vocation cards
+              VocationCard(
+                selected: selectedVocation == Vocation.junkie,
+                onTap: updateVocation,
+                vocation: Vocation.junkie,
               ),
-            ),
-            const SizedBox(height: 30),
-            Center(
-              child: StyledButton(
-                onPressed: handleSubmit,
-                child: const StyledHeading('Create Character'),
+              VocationCard(
+                selected: selectedVocation == Vocation.ninja,
+                onTap: updateVocation,
+                vocation: Vocation.ninja,
               ),
-            ),
-          ],
+              VocationCard(
+                selected: selectedVocation == Vocation.raider,
+                onTap: updateVocation,
+                vocation: Vocation.raider,
+              ),
+              VocationCard(
+                selected: selectedVocation == Vocation.wizard,
+                onTap: updateVocation,
+                vocation: Vocation.wizard,
+              ),
+              Center(
+                child: StyledButton(
+                  onPressed: handleSubmit,
+                  child: const StyledHeading('Create Character'),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
