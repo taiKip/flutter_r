@@ -1,11 +1,17 @@
+import 'package:flutter_rpg/models/character.dart';
+import 'package:flutter_rpg/screens/home/home.dart';
+import 'package:flutter_rpg/shared/styled_dialog.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
+
 import 'package:flutter_rpg/models/vocation.dart';
 import 'package:flutter_rpg/screens/create/vocation_card.dart';
 import 'package:flutter_rpg/shared/styled_button.dart';
-import 'package:google_fonts/google_fonts.dart';
-
-import 'package:flutter/material.dart';
 import 'package:flutter_rpg/shared/styled_text.dart';
 import 'package:flutter_rpg/theme.dart';
+
+var uuid = const Uuid();
 
 class Create extends StatefulWidget {
   const Create({super.key});
@@ -36,16 +42,41 @@ class _CreateState extends State<Create> {
   // submit handler
   void handleSubmit() {
     if (_nameController.text.trim().isEmpty) {
-      print('name must not be empty');
+      //show error dialog
+
+      showDialog(
+        context: context,
+        builder: (_) => const StyledDialog(
+          title: 'Missing Charater Name',
+          content: 'Every good RPG character needs a great name...',
+        ),
+      );
+
       return;
     }
 
     if (_sloganController.text.trim().isEmpty) {
-      print('name must not be empty');
+      // show error dialog
+      showDialog(
+        context: context,
+        builder: (_) => const StyledDialog(
+          title: 'Missing Charater Name',
+          content: 'Remember to add a catchy slogan...',
+        ),
+      );
       return;
     }
-    print(_nameController.text);
-    print(_sloganController.text);
+
+    characters.add(
+      Character(
+        name: _nameController.text.trim(),
+        slogan: _sloganController.text.trim(),
+        vocation: selectedVocation,
+        id: uuid.v4(),
+      ),
+    );
+
+    Navigator.push(context, MaterialPageRoute(builder: (ctx) => Home()));
   }
 
   @override
@@ -124,6 +155,12 @@ class _CreateState extends State<Create> {
                 onTap: updateVocation,
                 vocation: Vocation.wizard,
               ),
+              // good luck message
+              Center(child: Icon(Icons.code, color: AppColors.primaryColor)),
+              Center(child: const StyledHeading('Good Luck.')),
+              Center(child: const StyledText('And enjoy the journey....')),
+              const SizedBox(height: 30),
+
               Center(
                 child: StyledButton(
                   onPressed: handleSubmit,
