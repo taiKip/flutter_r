@@ -3,6 +3,7 @@ import 'package:flutter_rpg/models/character.dart';
 import 'package:flutter_rpg/models/skill.dart';
 import 'package:flutter_rpg/shared/styled_text.dart';
 import 'package:flutter_rpg/theme.dart';
+import 'package:flutter_rpg/shared/styled_button.dart';
 
 class SkillList extends StatefulWidget {
   const SkillList(this.character, {super.key});
