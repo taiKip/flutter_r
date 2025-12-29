@@ -26,15 +26,19 @@ mixin Stats {
     if (_points > 0) {
       if (stat == 'health') {
         _health++;
+        _points--;
       }
       if (stat == 'attack') {
         _attack++;
+        _points--;
       }
       if (stat == 'defense') {
         _defence++;
+        _points--;
       }
       if (stat == 'skill') {
         _skill++;
+        _points--;
       }
     }
   }
